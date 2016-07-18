@@ -43,8 +43,14 @@ export function buildRelation(baseUrl: string,
  * @param data
  * @returns {string[]}
  */
-export function getDataAttributesList(data: Data): any {
-  return _.keys(getDataAttributes(data)).filter((name: string) =>
+export function getDataAttributesList(data: Data, excludeIdAndTypeColumns: boolean = true): any {
+  let attributes = _.keys(getDataAttributes(data));
+
+  if (!excludeIdAndTypeColumns) {
+    return attributes.filter((name: string) => name !== 'id');
+  }
+
+  return attributes.filter((name: string) =>
     name !== 'id' &&
     !_.endsWith(name, '_id') &&
     !_.endsWith(name, '_type')

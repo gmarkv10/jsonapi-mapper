@@ -34,7 +34,7 @@ export default class Bookshelf implements I.Mapper {
    * @param bookshelfOptions
    * @param template
    */
-  mapRelations(model: Model, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, template?: ISerializerOptions): void {
+  mapRelations(model: Model, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, template?: ISerializerOptions, excludeIdAndTypeColumns: boolean = true): void {
 
     let self: this = this;
 
@@ -58,11 +58,11 @@ export default class Bookshelf implements I.Mapper {
         if (template[relName] === undefined || _.isEmpty(template[relName].attributes)) {
 
           // Add relation serialization
-          template[relName] = utils.buildRelation(self.baseUrl, type, relName, utils.getDataAttributesList(relModel), true, bookshelfOptions.disableLinks);
+          template[relName] = utils.buildRelation(self.baseUrl, type, relName, utils.getDataAttributesList(relModel, excludeIdAndTypeColumns), true, bookshelfOptions.disableLinks);
         }
 
         // recurse to add nested relations
-        self.mapRelations(relModel, relName, bookshelfOptions, template[relName]);
+        self.mapRelations(relModel, relName, bookshelfOptions, template[relName], excludeIdAndTypeColumns);
     });
   }
 
@@ -73,7 +73,7 @@ export default class Bookshelf implements I.Mapper {
    * @param bookshelfOptions
    * @returns {"jsonapi-serializer".Serializer}
    */
-  map(data: any, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}): any {
+  map(data: any, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, excludeIdAndTypeColumns: boolean = true): any {
     // TODO ADD meta property of serializerOptions TO template
 
     let self: this = this;
@@ -88,14 +88,14 @@ export default class Bookshelf implements I.Mapper {
     // Serializer process for a Model
     if (isModel(data)) {
       // Add list of valid attributes
-      template.attributes = utils.getDataAttributesList(data);
+      template.attributes = utils.getDataAttributesList(data, excludeIdAndTypeColumns);
 
       // Provide support for withRelated option TODO WARNING DEPRECATED. To be deleted on next major version
       if (bookshelfOptions.includeRelations) bookshelfOptions.relations = bookshelfOptions.includeRelations;
 
       // Add relations (only if permitted)
       if (bookshelfOptions.relations) {
-        self.mapRelations(data, type, bookshelfOptions, template);
+        self.mapRelations(data, type, bookshelfOptions, template, excludeIdAndTypeColumns);
       }
 
       // Serializer process for a Collection
@@ -106,13 +106,13 @@ export default class Bookshelf implements I.Mapper {
       if (!_.isUndefined(model)) {
 
         // Add list of valid attributes
-        template.attributes = utils.getDataAttributesList(model);
+        template.attributes = utils.getDataAttributesList(model, excludeIdAndTypeColumns);
 
         // Provide support for withRelated option TODO WARNING DEPRECATED. To be deleted on next major version
         if (bookshelfOptions.includeRelations) bookshelfOptions.relations = bookshelfOptions.includeRelations;
 
         data.forEach((model) => {
-          self.mapRelations(model, type, bookshelfOptions, template);
+          self.mapRelations(model, type, bookshelfOptions, template, excludeIdAndTypeColumns);
         });
 
       }

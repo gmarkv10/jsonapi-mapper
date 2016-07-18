@@ -4,6 +4,7 @@
   "description": "JSON API-Compliant Serialization for your ORM",
   "main": "es5/src/mapper.js",
   "scripts": {
+    "postinstall": "tsd install && tsc",
     "prepublish": "tsd install && tsc",
     "pretest": "tsc",
     "test": "jasmine"
