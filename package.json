@@ -36,9 +36,6 @@
     "url": "https://github.com/scoutforpets/jsonapi-mapper/issues"
   },
   "homepage": "https://github.com/scoutforpets/jsonapi-mapper",
-  "files": [
-    "es5"
-  ],
   "dependencies": {
     "inflection": "1.10.0",
     "jsonapi-serializer": "github:scoutforpets/jsonapi-serializer#empty-relationships-fix",
