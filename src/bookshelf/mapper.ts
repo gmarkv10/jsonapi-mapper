@@ -71,6 +71,7 @@ export default class Bookshelf implements I.Mapper {
    * @param data
    * @param type
    * @param bookshelfOptions
+   * @param excludeIdAndTypeColumns
    * @returns {"jsonapi-serializer".Serializer}
    */
   map(data: any, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, excludeIdAndTypeColumns: boolean = true): any {
