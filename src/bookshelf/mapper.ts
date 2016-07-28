@@ -34,7 +34,11 @@ export default class Bookshelf implements I.Mapper {
    * @param bookshelfOptions
    * @param template
    */
+<<<<<<< HEAD
   mapRelations(model: Model, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, template?: ISerializerOptions, excludeIdAndTypeColumns: boolean = true): void {
+=======
+  mapRelations(model: Model, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, template?: ISerializerOptions, excludeIdAndTypeColumns = false): void {
+>>>>>>> pr/1
 
     let self: this = this;
 
@@ -62,7 +66,17 @@ export default class Bookshelf implements I.Mapper {
         }
 
         // recurse to add nested relations
+<<<<<<< HEAD
         self.mapRelations(relModel, relName, bookshelfOptions, template[relName], excludeIdAndTypeColumns);
+=======
+        if(relModel.models){
+          for(let model of relModel.models){
+            self.mapRelations(model, relName, bookshelfOptions, template[relName], excludeIdAndTypeColumns);
+          }
+        } else {           
+          self.mapRelations(relModel, relName, bookshelfOptions, template[relName], excludeIdAndTypeColumns);
+        }
+>>>>>>> pr/1
     });
   }
 
@@ -74,7 +88,11 @@ export default class Bookshelf implements I.Mapper {
    * @param excludeIdAndTypeColumns
    * @returns {"jsonapi-serializer".Serializer}
    */
+<<<<<<< HEAD
   map(data: any, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, excludeIdAndTypeColumns: boolean = true): any {
+=======
+  map(data: any, type: string, bookshelfOptions: I.BookshelfOptions = {relations: true}, excludeIdAndTypeColumns = false): any {
+>>>>>>> pr/1
     // TODO ADD meta property of serializerOptions TO template
 
     let self: this = this;
